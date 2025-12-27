@@ -25,4 +25,4 @@ __pycache__/
 .idea/
 
 # Ignore generated YouTube JSON files
-data/YT_data*.json
+data/*.json
