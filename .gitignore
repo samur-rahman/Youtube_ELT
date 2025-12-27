@@ -23,3 +23,6 @@ __pycache__/
 # IDEs
 .vscode/
 .idea/
+
+# Ignore generated YouTube JSON files
+data/YT_data*.json
