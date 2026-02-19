@@ -2,12 +2,13 @@ from airflow import DAG
 import pendulum
 from datetime import datetime, timedelta
 from api.video_stats import getPlaylistID, getVideoIDs, extractVideoData, saveToJson
+from datawarehouse.dwh import stagingTable, coreTable
 
 #define local timezone
 local_tz = pendulum.timezone('America/New_York')
 
 # default args
-defalut_args = {
+default_args = {
     "owner": "samurrahman",
     "depends_on_past": False,
     "email_on_failure": False,
@@ -24,7 +25,7 @@ defalut_args = {
 
 with DAG(
     dag_id='produce_json',
-    default_args=defalut_args,
+    default_args=default_args,
     description="DAG to produce JSON file with raw data",
     schedule='0 14 * * *',
     catchup=False
@@ -38,3 +39,20 @@ with DAG(
 
     # Define Dependencies
     playlist_id >> video_ids >> extract_data >> save_to_json
+
+
+# DAG 2: update_db
+with DAG(
+    dag_id="update_db",
+    default_args=default_args,
+    description="DAG to process JSON file and insert data into both staging and core schemas",
+    catchup=False,
+    schedule=None,
+) as dag_update:
+
+    # Define tasks
+    update_staging = stagingTable()
+    update_core = coreTable()
+
+    # Define dependencies
+    update_staging >> update_core

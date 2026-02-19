@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 def loadData():
     
-    file_path = f"./data/YT_data{date.today()}.json()"
+    file_path = f"./data/YT_data{date.today()}.json"
 
     try:
         logger.info(f"Processing file: YT_data{date.today()}")
