@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def loadPath():
+def loadData():
     
     file_path = f"./data/YT_data{date.today()}.json()"
 
