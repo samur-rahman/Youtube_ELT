@@ -73,3 +73,22 @@ def updateRows(cur, conn, schema, row):
     except Exception as e:
         logger.error(f"Error updating row with Video_ID: {row[video_id]}")
         raise e
+    
+
+def deleteRows(cur, conn, schema, ids_to_delete):
+    try:
+        ids_to_delete = f"""({', '.join(f"'{id}'" for id in ids_to_delete)})"""
+
+        cur.execute(
+            f"""
+            DELETE FROM {schema}.{table}
+            WHERE "Video_ID" IN {ids_to_delete};
+            """
+        )
+
+        conn.commit()
+        logger.info(f"Deleted rows with Video_IDs: {ids_to_delete}")
+
+    except Exception as e:
+        logger.error(f"Error deleting rows with Video_IDs: {ids_to_delete} - {e}")
+        raise e
